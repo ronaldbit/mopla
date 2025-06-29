@@ -1,6 +1,4 @@
-# Documentación Completa de Mopla
-
-## 1. Introducción
+# Motor de plantillas Mopla
 
 **Mopla** (Motor de Plantillas Liviano en PHP) es un sistema personalizado diseñado para procesar plantillas con una sintaxis flexible que permite control de flujo, filtros, inclusión de archivos y manejo de errores, todo con alto control y trazabilidad. Ideal para proyectos que requieren una capa de separación entre lógica PHP y presentación HTML.
 
@@ -11,32 +9,31 @@ Facilitar la creación de interfaces dinámicas sin mezclar directamente PHP con
 ### Requisitos mínimos
 
 * PHP >= 7.4
-* Composer (para gestionar dependencias)
-* Servidor local o entorno LAMP/WAMP
+* Servidor local (Apache, Nginx o similar) o entorno LAMP/WAMP
 
 ---
 
 ## 2. Instalación
 
-### Paso 1: Clonar el proyecto
+### Paso 1: Clonar el proyecto o copiar los archivos
+
+Puedes descargar o copiar el código del proyecto directamente en tu servidor o carpeta local.
 
 ```bash
-git clone https://github.com/usuario/mopla.git
+git clone https://github.com/ronaldbit/mopla.git
 cd mopla
 ```
 
-### Paso 2: Instalar dependencias
+### Paso 2: Configurar tu entorno
 
-```bash
-composer install
-```
+Asegúrate de tener PHP configurado y los archivos del motor Mopla disponibles en tu proyecto. No requiere Composer ni librerías externas.
 
 ### Paso 3: Probar ejecución
 
-Puedes usar `debug_final_template.php` como punto de entrada para ver el sistema en acción.
+Puedes usar `index_example.php` como punto de entrada para ver el sistema en acción.
 
 ```bash
-php debug_final_template.php
+php index_example.php
 ```
 
 ---
@@ -44,15 +41,15 @@ php debug_final_template.php
 ## 3. Estructura del Proyecto
 
 ```
-├── src/              # Código fuente del motor
-│   ├── Mopla.php     # Clase principal del motor
-│   ├── Parser.php    # Analiza la plantilla
-│   ├── Filters.php   # Filtros aplicables a variables
+├── src/                # Código fuente del motor
+│   ├── Mopla.php       # Clase principal del motor
+│   ├── Parser.php      # Analiza la plantilla
+│   ├── Filters.php     # Filtros aplicables a variables
 │   ├── ErrorHandler.php # Manejo de errores y advertencias
-│   └── Utils.php     # Utilidades generales
-├── docs/             # Documentación previa
-├── debug_final_template.php # Ejemplo de uso
-├── composer.json     # Dependencias
+│   └── Utils.php       # Utilidades generales
+├── docs/               # Documentación previa
+├── index_example.php   # Ejemplo de uso - index principal de carga
+├── vista_example.tpl   # Ejemplo de uso - plantilla con codigo mopla
 ```
 
 ---
@@ -64,6 +61,8 @@ Actualmente Mopla no usa un archivo de configuración global, pero puedes person
 * **Filtros:** en `Filters.php`
 * **Directivas de plantilla:** en `Parser.php`
 * **Estilo de errores:** en `ErrorHandler.php`
+
+Las plantillas que procesa Mopla deben tener extensión `.tpl` o `.mp`, y contener HTML mezclado con bloques de código Mopla entre llaves (`{ ... }`).
 
 ---
 
@@ -81,7 +80,7 @@ Una plantilla puede usar sintaxis como:
   <p>Bienvenido, usuario</p>
 {/if}
 
-{include 'footer.html'}
+{include 'footer.tpl'}
 ```
 
 Para renderizar una plantilla:
@@ -89,7 +88,7 @@ Para renderizar una plantilla:
 ```php
 require 'src/Mopla.php';
 $mopla = new Mopla();
-echo $mopla->render('plantillas/home.html', ['user' => $usuario]);
+echo $mopla->render('plantillas/home.tpl', ['user' => $usuario]);
 ```
 
 ---
@@ -132,7 +131,7 @@ $vars = [
   ]
 ];
 $mopla = new Mopla();
-echo $mopla->render('home.html', $vars);
+echo $mopla->render('home.mp', $vars);
 ```
 
 ---
@@ -157,4 +156,4 @@ Puedes:
 
 ## 10. Licencia y Créditos
 
-Este proyecto es de código abierto. Puedes usarlo, modificarlo o extenderlo según tus necesidades. Autor: RonaldRamos.
+Este proyecto es de código abierto. Puedes usarlo, modificarlo o extenderlo según tus necesidades. Autor: Ronald Ramos.
