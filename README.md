@@ -48,8 +48,7 @@ php index_example.php
 │   ├── ErrorHandler.php # Manejo de errores y advertencias
 │   └── Utils.php       # Utilidades generales
 ├── docs/               # Documentación previa
-├── index_example.php   # Ejemplo de uso - index principal de carga
-├── vista_example.tpl   # Ejemplo de uso - plantilla con codigo mopla
+├── demo/               # Ejemplo de uso
 ```
 
 ---
