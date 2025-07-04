@@ -22,15 +22,12 @@ class Mopla {
         $this->langDir = $options['langDir'] ?? 'lang';
         $this->useCache = $options['cache'] ?? true;
         Filters::registerDefaults($this->filters);
-
         if (!is_dir($this->templateDir)) {
             mkdir($this->templateDir, 0777, true);
         }
-
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir, 0777, true);
         }
-
     }
 
     public function setTemplateDir($path) {
@@ -62,18 +59,13 @@ class Mopla {
         }
     }
     
-    
     public function render($template, $vars = []) {
-        // Fusionar variables del render con las internas
         $this->vars = array_merge($this->vars, $vars);
         $this->vars['__templateDir'] = $this->templateDir;
         $this->vars['__debug'] = $this->isDebug();
-
         $bloquesEspeciales = [];
-
-        $baseDir = $this->templateDir ?? ''; // si no está definida, se usará ruta tal cual
+        $baseDir = $this->templateDir ?? ''; 
         $extension = pathinfo($template, PATHINFO_EXTENSION);
-
         $finalPath = '';
         if ($extension === '') {
             $found = false;
@@ -94,7 +86,7 @@ class Mopla {
             $fullPath = rtrim($baseDir, '/') . '/' . $template;
             if (file_exists($fullPath)) {
                 $finalPath = $fullPath;
-            } elseif (file_exists($template)) { // en caso el usuario ya dio una ruta completa
+            } elseif (file_exists($template)) { 
                 $finalPath = $template;
             } else {
                 ErrorHandler::addError("No se encontró la plantilla '$template'.");
@@ -128,16 +120,13 @@ class Mopla {
                 file_put_contents($cacheFile, $parsed);
             }
         }
-
         extract($this->vars);
-
         ob_start();
         if ($this->useCache && isset($cacheFile) && file_exists($cacheFile)) {
             include $cacheFile;
         } else {
             eval('?>' . $parsed);
         }
-
         return ob_get_clean();
     }
 
