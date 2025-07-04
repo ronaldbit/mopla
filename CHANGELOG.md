@@ -6,6 +6,10 @@ y este proyecto se adhiere al [Control de versiones semántico](https://semver.o
 
 ## [Unreleased]
 
+## [1.0.2] - 2025-07-04
+- Debug visual: `{ debug_dump() }` Muestra todas las variables disponibles (solo modo debug).
+- Nueva forma de asigna carpeta de plantilla y cache `$mopla->setTemplateDir('');` `$mopla->setCacheDir('');`
+
 ## [1.0.0] - 2025-06-30
 - Implementación estable del motor de plantillas Mopla.
 - Soporte completo para extensiones `.tpl` y `.mp`.
