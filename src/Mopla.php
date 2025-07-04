@@ -16,15 +16,13 @@ class Mopla {
     protected $production = false;
     protected bool $useCache = true;
 
-
     public function __construct($options = []) {
         $this->templateDir = $options['templateDir'] ?? 'templates';
         $this->cacheDir = $options['cacheDir'] ?? 'cache';
         $this->langDir = $options['langDir'] ?? 'lang';
         $this->useCache = $options['cache'] ?? true;
-        Filters::registerDefaults($this->filters); // registra filtros iniciales
+        Filters::registerDefaults($this->filters);
 
-        // Crear directorios si no existen
         if (!is_dir($this->templateDir)) {
             mkdir($this->templateDir, 0777, true);
         }
@@ -35,6 +33,20 @@ class Mopla {
 
     }
 
+    public function setTemplateDir($path) {
+        $this->templateDir = $path;
+        if (!is_dir($this->templateDir)) {
+            mkdir($this->templateDir, 0777, true);
+        }
+    }
+
+    public function setCacheDir($path) {
+        $this->cacheDir = $path;
+        if (!is_dir($this->cacheDir)) {
+            mkdir($this->cacheDir, 0777, true);
+        }
+    }
+ 
     public function assign($key, $value) {
         $this->vars[$key] = $value;
     }
@@ -49,6 +61,7 @@ class Mopla {
             $this->lang = json_decode(file_get_contents($path), true);
         }
     }
+    
     
     public function render($template, $vars = []) {
         // Fusionar variables del render con las internas
@@ -89,6 +102,14 @@ class Mopla {
             }
         }
 
+        $realPath = realpath($finalPath);
+        $templateRoot = realpath($this->templateDir);
+
+        if (!$realPath || !$templateRoot || strpos($realPath, $templateRoot) !== 0) {
+            ErrorHandler::addError("Acceso denegado: intento de cargar una plantilla fuera del directorio permitido.");
+            exit;
+        }
+
         $content = file_get_contents($finalPath);
         $parsed = Parser::parse($content, $this->vars, $this->filters, $this->lang, $template, $bloquesEspeciales);
 
@@ -120,7 +141,6 @@ class Mopla {
         return ob_get_clean();
     }
 
- 
     public function setDebug($debug) {
         $this->debug = $debug;
     }
@@ -136,6 +156,4 @@ class Mopla {
     public function isProductionMode() {
         return $this->production;
     }
-
-
 }
