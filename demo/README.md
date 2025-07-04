@@ -2,14 +2,23 @@
 
 ```php
 require_once 'src/Mopla.php';
-
+```
+```php
 $mopla = new Mopla([
-    'template_dir' => __DIR__ . '/templates', // Ruta de plantillas
-    'cache_dir' => __DIR__ . '/cache',        // Carpeta de caché compilada
+    'templateDir' => __DIR__ . '/templates',   // Ruta de plantillas
+    'cacheDir' => __DIR__ . '/cache',          // Carpeta de caché compilada
     'debug' => true,                           // Modo desarrollo
     'cache' => false                           // Cache desactivada por defecto
 ]);
-
+```
+o puedes usarlo asi:
+```php
+$mopla = new Mopla([ 'debug' => true, 'cache' => false]);
+$mopla->setTemplateDir(__DIR__ . '/../views/');
+$mopla->setCacheDir(__DIR__ . '/../cache/');
+```
+Envio de datos y renderizado 
+```php
 $data = [
     'titulo' => 'Bienvenido a Mopla',
     'usuario' => 'DemoUser',
